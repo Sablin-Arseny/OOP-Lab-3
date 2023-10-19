@@ -1,6 +1,6 @@
 #include "iostream"
 #include "cassert"
-#include "Recipe.h"
+#include "Ingredient.h"
 
 using namespace std;
 
@@ -66,6 +66,9 @@ int main() {
     assert(defaultAction.getDurationMinute() == testDurationMinute);
 
     cout << "All tests passed" << endl;
+
+    cout << defaultIngredient.isIngredient() << endl;
+    cout << defaultIngredient.isAction() << endl;
 
 //    Recipe recipe = Recipe(defaultIngredient);
 //    recipe.add(copiedIngredient);

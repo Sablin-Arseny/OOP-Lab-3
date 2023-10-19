@@ -1,6 +1,4 @@
-#include "Step.h"
-
-using namespace std;
+#include "Action.h"
 
 class Ingredient: public Step{
 
@@ -8,7 +6,7 @@ public:
     // Конструкторы
     Ingredient();
     Ingredient(string &name, string &measureUnit, double amount);
-    Ingredient(Ingredient const &ingredient);
+    Ingredient(const Ingredient &ingredient);
 
     // Геттеры
     string getMeasureUnit() const;
@@ -17,6 +15,8 @@ public:
     // Сеттеры
     void setMeasureUnit(string &measureUnit);
     void setAmount(double amount);
+
+    virtual bool isIngredient();
 
 private:
     string _measureUnit;

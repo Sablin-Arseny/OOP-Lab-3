@@ -1,5 +1,4 @@
 #include "Ingredient.h"
-#include "Action.h"
 
 class Recipe {
 public:
@@ -24,11 +23,9 @@ public:
 
 private:
     struct Node {
-        Ingredient _ingredient;
-        Action _action;
+        Step _step;
         struct Node *_left = nullptr; // лево на действие
         struct Node *_right = nullptr; // право на ингредиент
-        bool _isIngredient; // true - ингредиент, false - действие
     } typedef node;
 
     node *_root;

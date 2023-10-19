@@ -86,22 +86,22 @@ Action Recipe::getAction() {
 }
 
 bool Recipe::isIngredient(){
-    return _root->_isIngredient;
+    return _root->_step.isIngredient();
 }
 
 bool Recipe::isAction(){
-    return !_root->_isIngredient;
+    return _root->_step.isAction();
 }
 
 void Recipe::showStep(){
     if(this->isIngredient()){
-        cout << _root->_ingredient.getName() << " ";
-        cout << _root->_ingredient.getAmount() << " ";
-        cout << _root->_ingredient.getMeasureUnit() << endl;
+        cout << _root->_step.getName() << " ";
+        cout << _root->_step.getAmount() << " ";
+        cout << _root->_step.getMeasureUnit() << endl;
     }
     else if(this->isAction()){
-        cout << _root->_action.getName() << " ";
-        cout << _root->_action.getDurationMinute() << " min" << endl;
+        cout << _root->_step.getName() << " ";
+        cout << _root->_step.getDurationMinute() << " min" << endl;
     }
 }
 

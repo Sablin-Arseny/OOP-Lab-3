@@ -11,6 +11,9 @@ public:
     Step(string &name);
     Step(const Step &step);
 
+    virtual bool isAction();
+    virtual bool isIngredient();
+
 protected:
     string _name;
 };

@@ -5,7 +5,7 @@ Step::Step(){
 }
 
 Step::Step(string &name){
-    _name = name;
+    setName(name);
 }
 
 Step::Step(const Step &step){
@@ -18,4 +18,12 @@ void Step::setName(string &name) {
 
 string Step::getName() const {
     return _name;
+}
+
+bool Step::isIngredient() {
+    return false;
+}
+
+bool Step::isAction() {
+    return false;
 }

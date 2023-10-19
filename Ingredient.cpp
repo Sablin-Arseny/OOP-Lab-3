@@ -2,23 +2,21 @@
 
 // По умолчанию
 Ingredient::Ingredient(){
+    _name = "";
     _measureUnit = "";
     _amount = 0;
 }
 // Инициализация
 Ingredient::Ingredient(string &name, string &measureUnit, double amount){
-    _measureUnit = measureUnit;
-    if (amount < 0){
-        _amount = 0;
-    }
-    else{
-        _amount = amount;
-    }
+    setName(name);
+    setMeasureUnit(measureUnit);
+    setAmount(amount);
 }
 // Копирование
-Ingredient::Ingredient(Ingredient const &ingredient){
-    _measureUnit = ingredient._measureUnit;
-    _amount = ingredient._amount;
+Ingredient::Ingredient(const Ingredient &ingredient){
+    _name = ingredient.getName();
+    _measureUnit = ingredient.getMeasureUnit();
+    setAmount(ingredient.getAmount());
 }
 
 // Геттеры
@@ -40,4 +38,8 @@ void Ingredient::setAmount(double amount){
     else{
         _amount = amount;
     }
+}
+
+bool Ingredient::isIngredient() {
+    return true;
 }

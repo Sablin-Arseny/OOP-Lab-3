@@ -1,7 +1,5 @@
 #include "Step.h"
 
-using namespace std;
-
 class Action: public Step{
 
 public:
@@ -15,6 +13,8 @@ public:
 
     // Сеттеры
     void setDurationMinute(double durationMinute);
+
+    virtual bool isAction();
 
 private:
     double _durationMinute;

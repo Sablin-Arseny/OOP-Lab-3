@@ -3,20 +3,18 @@
 // Конструкторы
 // По умолчанию
 Action::Action(){
+    _name = "";
     _durationMinute = 0;
 }
 // Инициализация
 Action::Action(string &name, double durationMinute){
-    if (durationMinute < 0){
-        _durationMinute = 0;
-    }
-    else {
-        _durationMinute = durationMinute;
-    }
+    setName(name);
+    setDurationMinute(durationMinute);
 }
 // Копирование
 Action::Action(Action const &action){
-    _durationMinute = action._durationMinute;
+    _name = action.getName();
+    setDurationMinute(action.getDurationMinute());
 }
 
 // Геттеры
@@ -32,4 +30,8 @@ void Action::setDurationMinute(double durationMinute){
     else {
         _durationMinute = durationMinute;
     }
+}
+
+bool Action::isAction() {
+    return true;
 }
