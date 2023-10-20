@@ -9,7 +9,7 @@ Step::Step(string &name){
 }
 
 Step::Step(const Step &step){
-    _name = step._name;
+    _name = step.getName();
 }
 
 void Step::setName(string &name) {

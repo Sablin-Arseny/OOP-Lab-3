@@ -1,4 +1,8 @@
+#include "iostream"
+#include "string"
 #include "Step.h"
+
+using namespace std;
 
 class Action: public Step{
 
@@ -6,7 +10,7 @@ public:
     // Конструкторы
     Action();
     Action(string &name, double durationMinute);
-    Action(Action const &action);
+    Action(const Action &action);
 
     // Геттеры
     double getDurationMinute() const;
@@ -14,6 +18,7 @@ public:
     // Сеттеры
     void setDurationMinute(double durationMinute);
 
+    // Идентификатор
     virtual bool isAction();
 
 private:

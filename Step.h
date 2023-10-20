@@ -1,4 +1,5 @@
 #include "iostream"
+#include "string"
 
 using namespace std;
 
@@ -11,8 +12,11 @@ public:
     Step(string &name);
     Step(const Step &step);
 
+    // Идентификаторы
     virtual bool isAction();
     virtual bool isIngredient();
+
+    // Виртуальные
 
 protected:
     string _name;

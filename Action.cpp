@@ -12,11 +12,10 @@ Action::Action(string &name, double durationMinute){
     setDurationMinute(durationMinute);
 }
 // Копирование
-Action::Action(Action const &action){
+Action::Action(const Action &action){
     _name = action.getName();
     setDurationMinute(action.getDurationMinute());
 }
-
 // Геттеры
 double Action::getDurationMinute() const{
     return _durationMinute;
@@ -32,6 +31,7 @@ void Action::setDurationMinute(double durationMinute){
     }
 }
 
+// Идентификатор
 bool Action::isAction() {
     return true;
 }
