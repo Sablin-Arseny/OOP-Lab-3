@@ -7,62 +7,51 @@ Recipe::Recipe(){
     _root->_right = nullptr;
 };
 
-Recipe::Recipe(const Ingredient &ingredient) {
+Recipe::Recipe(const Step *step) {
     _root = new node;
 
-    _root->_ingredient = Ingredient(ingredient);
+    _root->_step = new Step();
+    _root->_step = (Step *) step;
+
     _root->_right = nullptr;
     _root->_left = nullptr;
-    _root->_isIngredient = true;
 }
 
-Recipe::Recipe(Recipe &recipe) {
-    _root = new node;
-    if (recipe.isIngredient()){
-        _root->_ingredient = Ingredient(recipe._root->_ingredient);
-    }
-    else if (recipe.isAction()){
-        _root->_action = Action(recipe._root->_action);
-    }
-    node *start = recipe._root;
-    while (!recipe.isEmpty()){
-        if (recipe.isIngredient()){
-            this->add(recipe._root->_ingredient);
-        }
-        else if (recipe.isAction()){
-            this->add(recipe._root->_action);
-        }
-        recipe.next();
-    }
-    recipe._root = start;
-}
+//Recipe::Recipe(Recipe &recipe) {
+//    _root = new node;
+//    if (recipe.isIngredient()){
+//        _root->_ingredient = Ingredient(recipe._root->_ingredient);
+//    }
+//    else if (recipe.isAction()){
+//        _root->_action = Action(recipe._root->_action);
+//    }
+//    node *start = recipe._root;
+//    while (!recipe.isEmpty()){
+//        if (recipe.isIngredient()){
+//            this->add(recipe._root->_ingredient);
+//        }
+//        else if (recipe.isAction()){
+//            this->add(recipe._root->_action);
+//        }
+//        recipe.next();
+//    }
+//    recipe._root = start;
+//}
 
-void Recipe::add(const Ingredient &ingredient){
+void Recipe::add(Step *step){
     node *start = _root;
 
     while (_root->_right or _root->_left){
         this->next();
     }
-    Ingredient newIngredient = Ingredient(ingredient);
+
     node *newStep = new node;
-    newStep->_ingredient = newIngredient;
-    newStep->_isIngredient = true;
+    newStep->_step = step;
     _root->_right = newStep;
     _root = start;
-}
-
-void Recipe::add(const Action &action){
-    node *start = _root;
-
-    while (_root->_right or _root->_left){
+    if (!_root->_step){
         this->next();
     }
-    Action newAction = Action(action);
-    node *newStep = new node;
-    newStep->_action = newAction;
-    newStep->_isIngredient = false;
-    _root->_left = newStep;
-    _root = start;
 }
 
 void Recipe::next(){
@@ -77,31 +66,32 @@ void Recipe::next(){
     }
 }
 
-Ingredient Recipe::getIngredient(){
-    return _root->_ingredient;
+Step * Recipe::getStep(){
+    return _root->_step;
 }
 
-Action Recipe::getAction() {
-    return _root->_action;
+bool Recipe::stepIsIngredient(){
+    return _root->_step->isIngredient();
 }
 
-bool Recipe::isIngredient(){
-    return _root->_step.isIngredient();
-}
-
-bool Recipe::isAction(){
-    return _root->_step.isAction();
+bool Recipe::stepIsAction(){
+    return _root->_step->isAction();
 }
 
 void Recipe::showStep(){
-    if(this->isIngredient()){
-        cout << _root->_step.getName() << " ";
-        cout << _root->_step.getAmount() << " ";
-        cout << _root->_step.getMeasureUnit() << endl;
+    if (_root){
+        if(_root->_step->isIngredient()){
+            cout << ((Ingredient*)_root->_step)->getName() << " ";
+            cout << ((Ingredient*)_root->_step)->getAmount() << " ";
+            cout << ((Ingredient*)_root->_step)->getMeasureUnit() << endl;
+        }
+        else if(_root->_step->isAction()){
+            cout << ((Action*)_root->_step)->getName() << " ";
+            cout <<((Action*)_root->_step)->getDurationMinute() << " min" << endl;
+        }
     }
-    else if(this->isAction()){
-        cout << _root->_step.getName() << " ";
-        cout << _root->_step.getDurationMinute() << " min" << endl;
+    else{
+        cout << "Empty recipe" << endl;
     }
 }
 

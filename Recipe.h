@@ -3,27 +3,25 @@
 class Recipe {
 public:
     Recipe();
-    Recipe(const Ingredient &ingredient);
-    Recipe(Recipe &recipe);
+    Recipe(const Step *step);
+    // Recipe(Recipe &recipe);
 
-    void add(const Ingredient &ingredient);
-    void add(const Action &action);
+    void add(Step *step);
     void next();
     void pop();
 
-    bool isIngredient();
-    bool isAction();
+    bool stepIsIngredient();
+    bool stepIsAction();
     bool isEmpty();
 
-    Ingredient getIngredient();
-    Action getAction();
+    Step * getStep();
 
     void showStep();
     void showRecipe();
 
 private:
     struct Node {
-        Step _step;
+        Step *_step = nullptr;
         struct Node *_left = nullptr; // лево на действие
         struct Node *_right = nullptr; // право на ингредиент
     } typedef node;
