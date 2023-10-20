@@ -1,15 +1,31 @@
 #include "iostream"
 #include "cassert"
-#include "Ingredient.h"
+#include "Recipe.h"
 
 using namespace std;
 
 int main() {
+
+    string name1 = "test";
+    string name2 = "kg";
+    double name3 = 1.5;
+    Ingredient *newOne = new Ingredient(name1, name2, name3);
+    Step *step = new Step;
+    step = (Step *) newOne;
+
+    cout << newOne->isIngredient() << endl;
+    cout << step->isIngredient() << endl;
+    ((Ingredient *) step)->setAmount(2);
+    cout << ((Ingredient *) step)->getAmount() << endl;
+    cout << step->isAction() << endl;
+
+
     // Тест класса Ingredient
     string testIngredientName = "carrot";
     string testMeasureUnit = "kg";
     double testAmount = 1.5;
     string testIngredientName2 = "milk";
+
 
     // Проверка на значения по умолчанию
     Ingredient defaultIngredient = Ingredient();
@@ -66,21 +82,5 @@ int main() {
     assert(defaultAction.getDurationMinute() == testDurationMinute);
 
     cout << "All tests passed" << endl;
-
-    cout << defaultIngredient.isIngredient() << endl;
-    cout << defaultIngredient.isAction() << endl;
-
-//    Recipe recipe = Recipe(defaultIngredient);
-//    recipe.add(copiedIngredient);
-//    recipe.add(copiedAction);
-//    recipe.showRecipe();
-//    cout << "======" << endl;
-//    copiedAction.setName(testIngredientName2);
-//    cout << copiedAction.getName() << endl;
-//    recipe.showRecipe();
-//    cout << "======" << endl;
-//    Recipe recipe2 = Recipe(recipe);
-
-
     return 0;
 }
