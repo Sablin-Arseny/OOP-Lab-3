@@ -5,27 +5,31 @@
 using namespace std;
 
 int main() {
+    // Тест класса Step
+    string testStepName = "step";
 
-    string name1 = "test";
-    string name2 = "kg";
-    double name3 = 1.5;
-    Ingredient *newOne = new Ingredient(name1, name2, name3);
-    Step *step = new Step;
-    step = (Step *) newOne;
+    // Проверка на значения по умолчанию
+    Step defaultStep = Step();
+    assert(defaultStep.getName().empty());
 
-    cout << newOne->isIngredient() << endl;
-    cout << step->isIngredient() << endl;
-    ((Ingredient *) step)->setAmount(2);
-    cout << ((Ingredient *) step)->getAmount() << endl;
-    cout << step->isAction() << endl;
+    // Проверка конструктора инициализации
+    Step initedStep = Step(testStepName);
+    assert(initedStep.getName() == testStepName);
 
+    // Проверка конструктора копирования
+    Step copiedStep = Step(initedStep);
+    assert(copiedStep.getName() == testStepName);
+
+    // Проверка модификаторов и селекторов
+    defaultStep.setName(testStepName);
+    assert(defaultStep.getName() == testStepName);
+
+    cout << "Tests for class Step are passed" << endl;
 
     // Тест класса Ingredient
     string testIngredientName = "carrot";
     string testMeasureUnit = "kg";
     double testAmount = 1.5;
-    string testIngredientName2 = "milk";
-
 
     // Проверка на значения по умолчанию
     Ingredient defaultIngredient = Ingredient();
@@ -54,6 +58,8 @@ int main() {
     assert(defaultIngredient.getMeasureUnit() == testMeasureUnit);
     assert(defaultIngredient.getAmount() == testAmount);
 
+    cout << "Tests for class Ingredient are passed" << endl;
+
     // Тест класса Action
     string testActionName = "cut";
     double testDurationMinute = 14.5;
@@ -81,6 +87,76 @@ int main() {
     assert(defaultAction.getName() == testActionName);
     assert(defaultAction.getDurationMinute() == testDurationMinute);
 
-    cout << "All tests passed" << endl;
+    cout << "Tests for class Action are passed" << endl;
+
+    // Тест класса Recipe
+    // Значения по умолчанию
+    Recipe defaultRecipe = Recipe();
+    assert(defaultRecipe.isEmpty() == true);
+
+    // Проверка конструктора инициализации
+    Recipe initedRecipe1 = Recipe(&initedStep);
+    assert(initedRecipe1.getStep()->getName() == testStepName);
+
+    Recipe initedRecipe2 = Recipe(&initedIngredient);
+    assert(((Ingredient *)initedRecipe2.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)initedRecipe2.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)initedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
+
+    Recipe initedRecipe3 = Recipe(&initedAction);
+    assert(((Action *)initedRecipe3.getStep())->getName() == testActionName);
+    assert(((Action *)initedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
+
+    // Проверка конструктора копирования
+    Recipe copiedRecipe1 = Recipe(initedRecipe1);
+    assert(copiedRecipe1.getStep()->getName() == testStepName);
+
+    Recipe copiedRecipe2 = Recipe(initedRecipe2);
+    assert(((Ingredient *)copiedRecipe2.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)copiedRecipe2.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)copiedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
+
+    Recipe copiedRecipe3 = Recipe(initedRecipe3);
+    assert(((Action *)copiedRecipe3.getStep())->getName() == testActionName);
+    assert(((Action *)copiedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
+
+    // Проверка add, get, next, pop
+    initedRecipe2.add(&initedAction);
+    assert(((Ingredient *)initedRecipe2.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)initedRecipe2.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)initedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
+    initedRecipe2.next();
+    assert(((Action *)initedRecipe3.getStep())->getName() == testActionName);
+    assert(((Action *)initedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
+    initedRecipe2.pop();
+    assert(initedRecipe2.isEmpty() == true);
+
+    // Проверка stepIsAction и stepIsIngredient
+    assert(copiedRecipe2.stepIsIngredient() == true);
+    assert(copiedRecipe2.stepIsAction() == false);
+
+    assert(copiedRecipe3.stepIsIngredient() == false);
+    assert(copiedRecipe3.stepIsAction() == true);
+
+    cout << "Tests for class Recipe are passed" << endl;
+
+    // Тестирование виртуальных функций
+    assert(initedStep.isIngredient() == false);
+    assert(initedStep.isAction() == false);
+
+    assert(initedIngredient.isIngredient() == true);
+    assert(initedIngredient.isAction() == false);
+
+    assert(initedAction.isIngredient() == false);
+    assert(initedAction.isAction() == true);
+
+    assert(copiedRecipe2.getStep()->isIngredient() == true);
+    assert(copiedRecipe2.getStep()->isAction() == false);
+
+    assert(copiedRecipe3.getStep()->isIngredient() == false);
+    assert(copiedRecipe3.getStep()->isAction() == true);
+
+    cout << "Tests for virtual functions are passed" << endl;
+
     return 0;
 }

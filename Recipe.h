@@ -2,20 +2,25 @@
 
 class Recipe {
 public:
+    // Конструкторы
     Recipe();
     Recipe(const Step *step);
-    // Recipe(Recipe &recipe);
+    Recipe(Recipe &recipe) = default;
 
-    void add(Step *step);
+    // Добавление, итерация, удаление
+    void add(const Step *step);
     void next();
     void pop();
 
-    bool stepIsIngredient();
-    bool stepIsAction();
-    bool isEmpty();
+    // Проверки
+    bool stepIsIngredient() const;
+    bool stepIsAction() const;
+    bool isEmpty() const;
 
-    Step * getStep();
+    // Геттер
+    Step * getStep() const;
 
+    // Консольный вывод
     void showStep();
     void showRecipe();
 

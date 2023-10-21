@@ -12,16 +12,16 @@ public:
     Ingredient(string &name, string &measureUnit, double amount);
     Ingredient(const Ingredient &ingredient);
 
-    // Сеттеры
-    void setMeasureUnit(string &measureUnit);
-    void setAmount(double amount);
-
     // Геттеры
     string getMeasureUnit() const;
     double getAmount() const;
 
+    // Сеттеры
+    void setMeasureUnit(string &measureUnit);
+    void setAmount(double amount);
+
     // Идентификатор
-    virtual bool isIngredient();
+    bool isIngredient() override;
 
 private:
     string _measureUnit;

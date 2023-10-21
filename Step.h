@@ -5,12 +5,14 @@ using namespace std;
 
 class Step {
 public:
+    // Конструкторы
     Step();
     Step(string &name);
     Step(const Step &step);
 
-    void setName(string &name);
+    // Сеттеры и геттеры
     string getName() const;
+    void setName(string &name);
 
     // Идентификаторы
     virtual bool isAction();

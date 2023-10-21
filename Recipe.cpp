@@ -17,28 +17,11 @@ Recipe::Recipe(const Step *step) {
     _root->_left = nullptr;
 }
 
-//Recipe::Recipe(Recipe &recipe) {
-//    _root = new node;
-//    if (recipe.isIngredient()){
-//        _root->_ingredient = Ingredient(recipe._root->_ingredient);
-//    }
-//    else if (recipe.isAction()){
-//        _root->_action = Action(recipe._root->_action);
-//    }
-//    node *start = recipe._root;
-//    while (!recipe.isEmpty()){
-//        if (recipe.isIngredient()){
-//            this->add(recipe._root->_ingredient);
-//        }
-//        else if (recipe.isAction()){
-//            this->add(recipe._root->_action);
-//        }
-//        recipe.next();
-//    }
-//    recipe._root = start;
-//}
+Step * Recipe::getStep() const{
+    return _root->_step;
+}
 
-void Recipe::add(Step *step){
+void Recipe::add(const Step *step){
     node *start = _root;
 
     while (_root->_right or _root->_left){
@@ -46,7 +29,7 @@ void Recipe::add(Step *step){
     }
 
     node *newStep = new node;
-    newStep->_step = step;
+    newStep->_step = (Step *) step;
     _root->_right = newStep;
     _root = start;
     if (!_root->_step){
@@ -66,20 +49,50 @@ void Recipe::next(){
     }
 }
 
-Step * Recipe::getStep(){
-    return _root->_step;
+void Recipe::pop(){
+    node *pointer = _root;
+    node *prevPointer = pointer;
+    if (!pointer->_left and !pointer->_right){
+        _root->_step = nullptr;
+        _root->_right = nullptr;
+        _root->_left = nullptr;
+    }
+    else{
+        while(pointer->_left or pointer->_right){
+            if(pointer->_right){
+                prevPointer = pointer;
+                pointer = pointer->_right;
+            }
+            if(pointer->_left){
+                prevPointer = pointer;
+                pointer = pointer->_left;
+            }
+        }
+        prevPointer->_left = nullptr;
+        prevPointer->_right = nullptr;
+        delete pointer;
+    }
 }
 
-bool Recipe::stepIsIngredient(){
+bool Recipe::stepIsIngredient() const{
     return _root->_step->isIngredient();
 }
 
-bool Recipe::stepIsAction(){
+bool Recipe::stepIsAction() const{
     return _root->_step->isAction();
 }
 
+bool Recipe::isEmpty() const{
+    if (_root->_step){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
 void Recipe::showStep(){
-    if (_root){
+    if (!this->isEmpty()){
         if(_root->_step->isIngredient()){
             cout << ((Ingredient*)_root->_step)->getName() << " ";
             cout << ((Ingredient*)_root->_step)->getAmount() << " ";
@@ -91,42 +104,20 @@ void Recipe::showStep(){
         }
     }
     else{
-        cout << "Empty recipe" << endl;
+        cout << "Empty step" << endl;
     }
 }
 
 void Recipe::showRecipe() {
-    node *pointer = _root;
-    while(_root) {
-        this->showStep();
-        this->next();
-    }
-    _root = pointer;
-}
-
-bool Recipe::isEmpty() {
-    if (_root){
-        return false;
+    if (!this->isEmpty()){
+        node *pointer = _root;
+        while(_root) {
+            this->showStep();
+            this->next();
+        }
+        _root = pointer;
     }
     else{
-        return true;
+        cout << "Empty recipe" << endl;
     }
-}
-
-void Recipe::pop(){
-    node *pointer = _root;
-    node *prevPointer = pointer;
-    while(pointer->_left or pointer->_right){
-        if(pointer->_right){
-            prevPointer = pointer;
-            pointer = pointer->_right;
-        }
-        if(pointer->_left){
-            prevPointer = pointer;
-            pointer = pointer->_left;
-        }
-    }
-    prevPointer->_left = nullptr;
-    prevPointer->_right = nullptr;
-    delete pointer;
 }

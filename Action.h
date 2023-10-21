@@ -19,7 +19,7 @@ public:
     void setDurationMinute(double durationMinute);
 
     // Идентификатор
-    virtual bool isAction();
+    bool isAction() override;
 
 private:
     double _durationMinute;
