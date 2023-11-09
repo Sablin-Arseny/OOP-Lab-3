@@ -1,115 +1,91 @@
 #include "Recipe.h"
 
-Recipe::Recipe(){
-    _root = new node;
-
-    _root->_left = nullptr;
-    _root->_right = nullptr;
-};
-
-Recipe::Recipe(const Step *step) {
-    _root = new node;
-
-    _root->_step = new Step();
-    _root->_step = (Step *) step;
-
-    _root->_right = nullptr;
-    _root->_left = nullptr;
+Recipe::Recipe(const Ingredient * ingredient) {
+    recipe.push((Step*)ingredient);
 }
 
-Step * Recipe::getStep() const{
-    return _root->_step;
-}
-
-void Recipe::add(const Step *step){
-    node *start = _root;
-
-    while (_root->_right or _root->_left){
-        this->next();
-    }
-
-    node *newStep = new node;
-    newStep->_step = (Step *) step;
-    _root->_right = newStep;
-    _root = start;
-    if (!_root->_step){
-        this->next();
+void Recipe::add(const Step *step) {
+    if (step->identify() == ingredient || step->identify() == action){
+        recipe.push((Step*)step);
     }
 }
 
-void Recipe::next(){
-    if (_root->_left){
-        _root = _root->_left;
-    }
-    else if(_root->_right){
-        _root = _root->_right;
-    }
-    else{
-        _root = nullptr;
-    }
-}
-
-void Recipe::pop(){
-    node *pointer = _root;
-    node *prevPointer = pointer;
-    if (!pointer->_left and !pointer->_right){
-        _root->_step = nullptr;
-        _root->_right = nullptr;
-        _root->_left = nullptr;
-    }
-    else{
-        while(pointer->_left or pointer->_right){
-            if(pointer->_right){
-                prevPointer = pointer;
-                pointer = pointer->_right;
-            }
-            if(pointer->_left){
-                prevPointer = pointer;
-                pointer = pointer->_left;
-            }
-        }
-        prevPointer->_left = nullptr;
-        prevPointer->_right = nullptr;
-        delete pointer;
-    }
-}
-
-bool Recipe::isEmpty() const{
-    if (_root->_step){
-        return false;
-    }
-    else{
+bool Recipe::hasMistakes() {
+    if (this->isEmpty()){
         return true;
     }
+    if (this->getStep()->identify() == action){
+        return true;
+    }
+    if (recipe.size() == 1 && this->getStep()->identify() == ingredient){
+        return true;
+    }
+    bool prevIsIngredient = false;
+    Recipe recipeCopy = Recipe(*this);
+    while (!recipeCopy.isEmpty()){
+        if (recipeCopy.getStep()->identify() == ingredient){
+            if (prevIsIngredient){
+                return true;
+            }
+            prevIsIngredient = true;
+        }
+        else{
+            prevIsIngredient = false;
+        }
+        recipeCopy.next();
+    }
+    return false;
 }
 
-void Recipe::showStep(){
+bool Recipe::isEmpty() {
+    return recipe.empty();
+}
+
+void Recipe::next() {
+    recipe.pop();
+}
+
+void Recipe::pop() {
+    recipe.pop();
+}
+
+Step *Recipe::getStep() const {
+    if (!recipe.empty()){
+        return recipe.front();
+    }
+    else{
+        return nullptr;
+    }
+}
+
+void Recipe::showStep() {
     if (!this->isEmpty()){
-        if(_root->_step->identify() == ingredient){
-            cout << ((Ingredient*)_root->_step)->getName() << " ";
-            cout << ((Ingredient*)_root->_step)->getAmount() << " ";
-            cout << ((Ingredient*)_root->_step)->getMeasureUnit() << endl;
+        if (this->getStep()->identify() == ingredient){
+            cout << ((Ingredient*) this->getStep())->getName() << " ";
+            cout << ((Ingredient*) this->getStep())->getAmount() << " ";
+            cout << ((Ingredient*) this->getStep())->getMeasureUnit() << endl;
         }
-        else if(_root->_step->identify() == action){
-            cout << ((Action*)_root->_step)->getName() << " ";
-            cout <<((Action*)_root->_step)->getDurationMinute() << " min" << endl;
+        else if (this->getStep()->identify() == action){
+            cout << ((Action*) this->getStep())->getName() << " ";
+            cout <<((Action*) this->getStep())->getDurationMinute() << " min" << endl;
+        }
+        else{
+            cout << "Empty step" << endl;
         }
     }
     else{
-        cout << "Empty step" << endl;
+        cout << "Empty recipe" << endl;
     }
 }
 
 void Recipe::showRecipe() {
     if (!this->isEmpty()){
-        node *pointer = _root;
-        while(_root) {
-            this->showStep();
-            this->next();
+        Recipe recipeCopy = Recipe(*this);
+        while(!recipeCopy.isEmpty()){ // переписать на конструктор копирования
+            recipeCopy.showStep();
+            recipeCopy.next();
         }
-        _root = pointer;
-    }
-    else{
+    } else{
         cout << "Empty recipe" << endl;
     }
 }

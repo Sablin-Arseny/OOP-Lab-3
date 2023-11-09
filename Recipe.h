@@ -1,33 +1,31 @@
 #include "Ingredient.h"
+#include "queue"
 
 class Recipe {
 public:
-    // Конструкторы
-    Recipe();
-    Recipe(const Step *step);
-    Recipe(Recipe &recipe) = default;
+    // Конструктор
+    Recipe() = default;
+    Recipe(const Ingredient * ingredient);
+    Recipe(Recipe& recipe) = default;
 
-    // Добавление, итерация, удаление
-    void add(const Step *step);
+    // Добавление шага
+    void add(const Step * step);
+    // Итерация и удаление
     void next();
     void pop();
 
-    // Проверки
-    bool isEmpty() const;
-
-    // Геттер
+    // Получение текущего шага
     Step * getStep() const;
 
-    // Консольный вывод
+    // Проверка на пустой рецепт
+    bool isEmpty();
+    // Проверка на корректность рецепта
+    bool hasMistakes();
+
+    // Консольная распечатка
     void showStep();
     void showRecipe();
 
 private:
-    struct Node {
-        Step *_step = nullptr;
-        struct Node *_left = nullptr; // лево на действие
-        struct Node *_right = nullptr; // право на ингредиент
-    } typedef node;
-
-    node *_root;
+    queue<Step*> recipe;
 };
