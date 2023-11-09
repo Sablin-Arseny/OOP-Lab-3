@@ -20,6 +20,10 @@ bool Recipe::hasMistakes() {
     if (recipe.size() == 1 && this->getStep()->identify() == ingredient){
         return true;
     }
+    if (this->recipe.back()->identify() == ingredient){
+        return true;
+    }
+
     bool prevIsIngredient = false;
     Recipe recipeCopy = Recipe(*this);
     while (!recipeCopy.isEmpty()){
