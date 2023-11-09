@@ -95,41 +95,52 @@ int main() {
     assert(defaultRecipe.isEmpty() == true);
 
     // Проверка конструктора инициализации
-    Recipe initedRecipe1 = Recipe(&initedStep);
-    assert(initedRecipe1.getStep()->getName() == testStepName);
-
-    Recipe initedRecipe2 = Recipe(&initedIngredient);
-    assert(((Ingredient *)initedRecipe2.getStep())->getName() == testIngredientName);
-    assert(((Ingredient *)initedRecipe2.getStep())->getAmount() == testAmount);
-    assert(((Ingredient *)initedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
-
-    Recipe initedRecipe3 = Recipe(&initedAction);
-    assert(((Action *)initedRecipe3.getStep())->getName() == testActionName);
-    assert(((Action *)initedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
+    Recipe initedRecipe = Recipe(&initedIngredient);
+    assert(((Ingredient *)initedRecipe.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)initedRecipe.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)initedRecipe.getStep())->getMeasureUnit() == testMeasureUnit);
 
     // Проверка конструктора копирования
-    Recipe copiedRecipe1 = Recipe(initedRecipe1);
-    assert(copiedRecipe1.getStep()->getName() == testStepName);
+    Recipe copiedRecipe = Recipe(initedRecipe);
+    assert(((Ingredient *)copiedRecipe.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)copiedRecipe.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)copiedRecipe.getStep())->getMeasureUnit() == testMeasureUnit);
 
-    Recipe copiedRecipe2 = Recipe(initedRecipe2);
-    assert(((Ingredient *)copiedRecipe2.getStep())->getName() == testIngredientName);
-    assert(((Ingredient *)copiedRecipe2.getStep())->getAmount() == testAmount);
-    assert(((Ingredient *)copiedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
+    // Проверка add
+    defaultRecipe.add(&initedIngredient);
+    assert(defaultRecipe.isEmpty() == false);
+    assert(((Ingredient *)defaultRecipe.getStep())->getName() == testIngredientName);
+    assert(((Ingredient *)defaultRecipe.getStep())->getAmount() == testAmount);
+    assert(((Ingredient *)defaultRecipe.getStep())->getMeasureUnit() == testMeasureUnit);
 
-    Recipe copiedRecipe3 = Recipe(initedRecipe3);
-    assert(((Action *)copiedRecipe3.getStep())->getName() == testActionName);
-    assert(((Action *)copiedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
+    // Проверка next
+    defaultRecipe.add(&initedAction);
+    defaultRecipe.next();
+    assert(((Action *)defaultRecipe.getStep())->getName() == testActionName);
+    assert(((Action *)defaultRecipe.getStep())->getDurationMinute() == testDurationMinute);
 
-    // Проверка add, get, next, pop
-    initedRecipe2.add(&initedAction);
-    assert(((Ingredient *)initedRecipe2.getStep())->getName() == testIngredientName);
-    assert(((Ingredient *)initedRecipe2.getStep())->getAmount() == testAmount);
-    assert(((Ingredient *)initedRecipe2.getStep())->getMeasureUnit() == testMeasureUnit);
-    initedRecipe2.next();
-    assert(((Action *)initedRecipe3.getStep())->getName() == testActionName);
-    assert(((Action *)initedRecipe3.getStep())->getDurationMinute() == testDurationMinute);
-    initedRecipe2.pop();
-    assert(initedRecipe2.isEmpty() == true);
+    // Проверка pop
+    defaultRecipe.pop();
+    assert(defaultRecipe.isEmpty() == true);
+
+    // Проверка на ошибки в рецепте
+    assert(defaultRecipe.hasMistakes() == true); // true - пустой рецепт
+
+    defaultRecipe.add(&initedAction);
+    assert(defaultRecipe.hasMistakes() == true); // true - начинается с действия
+
+    defaultRecipe.pop();
+    defaultRecipe.add(&initedIngredient);
+    assert(defaultRecipe.hasMistakes() == true); // true - только один ингредиент, за ним нет действия
+
+    defaultRecipe.add(&copiedIngredient);
+    assert(defaultRecipe.hasMistakes() == true); // true - два ингредиента, без действий
+
+    defaultRecipe.add(&initedAction);
+    assert(defaultRecipe.hasMistakes() == true); // true - за первым ингредиентом нет действий
+
+    defaultRecipe.pop();
+    assert(defaultRecipe.hasMistakes() == false); // false - действие, ингредиент
 
     cout << "Tests for class Recipe are passed" << endl;
 
@@ -138,8 +149,10 @@ int main() {
     assert(initedIngredient.identify() == ingredient);
     assert(initedAction.identify() == action);
 
-    assert(copiedRecipe2.getStep()->identify() == ingredient);
-    assert(copiedRecipe3.getStep()->identify() == action);
+    assert(initedRecipe.getStep()->identify() == ingredient);
+    initedRecipe.add(&initedAction);
+    initedRecipe.next();
+    assert(initedRecipe.getStep()->identify() == action);
 
     // Проверка межклассового взаимодействия
     Action newAction;
