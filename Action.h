@@ -19,7 +19,7 @@ public:
     void setDurationMinute(double durationMinute);
 
     // Идентификатор
-    bool isAction() override;
+    StepType identify() const override;
 
 private:
     double _durationMinute;

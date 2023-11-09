@@ -21,7 +21,7 @@ public:
     void setAmount(double amount);
 
     // Идентификатор
-    bool isIngredient() override;
+    StepType identify() const override;
 
 private:
     string _measureUnit;

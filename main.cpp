@@ -131,30 +131,24 @@ int main() {
     initedRecipe2.pop();
     assert(initedRecipe2.isEmpty() == true);
 
-    // Проверка stepIsAction и stepIsIngredient
-    assert(copiedRecipe2.stepIsIngredient() == true);
-    assert(copiedRecipe2.stepIsAction() == false);
-
-    assert(copiedRecipe3.stepIsIngredient() == false);
-    assert(copiedRecipe3.stepIsAction() == true);
-
     cout << "Tests for class Recipe are passed" << endl;
 
     // Тестирование виртуальных функций
-    assert(initedStep.isIngredient() == false);
-    assert(initedStep.isAction() == false);
+    assert(initedStep.identify() == step);
+    assert(initedIngredient.identify() == ingredient);
+    assert(initedAction.identify() == action);
 
-    assert(initedIngredient.isIngredient() == true);
-    assert(initedIngredient.isAction() == false);
+    assert(copiedRecipe2.getStep()->identify() == ingredient);
+    assert(copiedRecipe3.getStep()->identify() == action);
 
-    assert(initedAction.isIngredient() == false);
-    assert(initedAction.isAction() == true);
+    // Проверка межклассового взаимодействия
+    Action newAction;
+    Step* step1 = & newAction;
+    assert(step1->identify() == action);
 
-    assert(copiedRecipe2.getStep()->isIngredient() == true);
-    assert(copiedRecipe2.getStep()->isAction() == false);
-
-    assert(copiedRecipe3.getStep()->isIngredient() == false);
-    assert(copiedRecipe3.getStep()->isAction() == true);
+    Ingredient newIngredient;
+    Step* step2 = & newIngredient;
+    assert(step2->identify() == ingredient);
 
     cout << "Tests for virtual functions are passed" << endl;
 

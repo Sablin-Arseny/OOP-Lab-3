@@ -42,6 +42,6 @@ double Ingredient::getAmount() const{
     return _amount;
 }
 
-bool Ingredient::isIngredient() {
-    return true;
+StepType Ingredient::identify() const{
+    return StepType::ingredient;
 }

@@ -32,6 +32,6 @@ void Action::setDurationMinute(double durationMinute){
 }
 
 // Идентификатор
-bool Action::isAction() {
-    return true;
+StepType Action::identify() const{
+    return StepType::action;
 }

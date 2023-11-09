@@ -20,10 +20,6 @@ string Step::getName() const {
     return _name;
 }
 
-bool Step::isIngredient() {
-    return false;
-}
-
-bool Step::isAction() {
-    return false;
+StepType Step::identify() const{
+    return StepType::step;
 }

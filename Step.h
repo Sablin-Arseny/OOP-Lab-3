@@ -3,6 +3,13 @@
 
 using namespace std;
 
+enum StepType {
+    ingredient,
+    action,
+    step
+};
+
+
 class Step {
 public:
     // Конструкторы
@@ -15,8 +22,7 @@ public:
     void setName(string &name);
 
     // Идентификаторы
-    virtual bool isAction();
-    virtual bool isIngredient();
+    virtual StepType identify() const;
 
 protected:
     string _name;

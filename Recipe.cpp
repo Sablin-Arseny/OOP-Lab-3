@@ -74,14 +74,6 @@ void Recipe::pop(){
     }
 }
 
-bool Recipe::stepIsIngredient() const{
-    return _root->_step->isIngredient();
-}
-
-bool Recipe::stepIsAction() const{
-    return _root->_step->isAction();
-}
-
 bool Recipe::isEmpty() const{
     if (_root->_step){
         return false;
@@ -93,12 +85,12 @@ bool Recipe::isEmpty() const{
 
 void Recipe::showStep(){
     if (!this->isEmpty()){
-        if(_root->_step->isIngredient()){
+        if(_root->_step->identify() == ingredient){
             cout << ((Ingredient*)_root->_step)->getName() << " ";
             cout << ((Ingredient*)_root->_step)->getAmount() << " ";
             cout << ((Ingredient*)_root->_step)->getMeasureUnit() << endl;
         }
-        else if(_root->_step->isAction()){
+        else if(_root->_step->identify() == action){
             cout << ((Action*)_root->_step)->getName() << " ";
             cout <<((Action*)_root->_step)->getDurationMinute() << " min" << endl;
         }

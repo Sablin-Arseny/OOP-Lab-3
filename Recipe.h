@@ -13,8 +13,6 @@ public:
     void pop();
 
     // Проверки
-    bool stepIsIngredient() const;
-    bool stepIsAction() const;
     bool isEmpty() const;
 
     // Геттер
