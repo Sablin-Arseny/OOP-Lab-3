@@ -115,12 +115,12 @@ int main() {
 
     // Проверка next
     defaultRecipe.add(&initedAction);
-    defaultRecipe.next();
+    defaultRecipe.nextStep();
     assert(((Action *)defaultRecipe.getStep())->getName() == testActionName);
     assert(((Action *)defaultRecipe.getStep())->getDurationMinute() == testDurationMinute);
 
     // Проверка pop
-    defaultRecipe.pop();
+    defaultRecipe.popFirstStep();
     assert(defaultRecipe.isEmpty() == true);
 
     // Проверка на ошибки в рецепте
@@ -129,7 +129,7 @@ int main() {
     defaultRecipe.add(&initedAction);
     assert(defaultRecipe.hasMistakes() == true); // true - начинается с действия
 
-    defaultRecipe.pop();
+    defaultRecipe.popFirstStep();
     defaultRecipe.add(&initedIngredient);
     assert(defaultRecipe.hasMistakes() == true); // true - только один ингредиент, за ним нет действия
 
@@ -139,7 +139,7 @@ int main() {
     defaultRecipe.add(&initedAction);
     assert(defaultRecipe.hasMistakes() == true); // true - за первым ингредиентом нет действий
 
-    defaultRecipe.pop();
+    defaultRecipe.popFirstStep();
     assert(defaultRecipe.hasMistakes() == false); // false - действие, ингредиент
 
     cout << "Tests for class Recipe are passed" << endl;
@@ -151,7 +151,7 @@ int main() {
 
     assert(initedRecipe.getStep()->identify() == ingredient);
     initedRecipe.add(&initedAction);
-    initedRecipe.next();
+    initedRecipe.nextStep();
     assert(initedRecipe.getStep()->identify() == action);
 
     // Проверка межклассового взаимодействия

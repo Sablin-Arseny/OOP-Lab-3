@@ -6,25 +6,25 @@ public:
     // Конструктор
     Recipe() = default;
     Recipe(const Ingredient * ingredient);
-    Recipe(Recipe& recipe) = default;
+    Recipe(const Recipe& recipe) = default;
 
     // Добавление шага
     void add(const Step * step);
     // Итерация и удаление
-    void next();
-    void pop();
+    void nextStep();
+    void popFirstStep();
 
     // Получение текущего шага
     Step * getStep() const;
 
     // Проверка на пустой рецепт
-    bool isEmpty();
+    bool isEmpty() const;
     // Проверка на корректность рецепта
-    bool hasMistakes();
+    bool hasMistakes() const;
 
     // Консольная распечатка
-    void showStep();
-    void showRecipe();
+    void showStep() const;
+    void showRecipe() const;
 
 private:
     queue<Step*> recipe;

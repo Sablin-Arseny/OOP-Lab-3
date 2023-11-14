@@ -10,7 +10,7 @@ void Recipe::add(const Step *step) {
     }
 }
 
-bool Recipe::hasMistakes() {
+bool Recipe::hasMistakes() const {
     if (this->isEmpty()){
         return true;
     }
@@ -36,20 +36,20 @@ bool Recipe::hasMistakes() {
         else{
             prevIsIngredient = false;
         }
-        recipeCopy.next();
+        recipeCopy.nextStep();
     }
     return false;
 }
 
-bool Recipe::isEmpty() {
+bool Recipe::isEmpty() const {
     return recipe.empty();
 }
 
-void Recipe::next() {
+void Recipe::nextStep() {
     recipe.pop();
 }
 
-void Recipe::pop() {
+void Recipe::popFirstStep() {
     recipe.pop();
 }
 
@@ -62,7 +62,7 @@ Step *Recipe::getStep() const {
     }
 }
 
-void Recipe::showStep() {
+void Recipe::showStep() const {
     if (!this->isEmpty()){
         if (this->getStep()->identify() == ingredient){
             cout << ((Ingredient*) this->getStep())->getName() << " ";
@@ -82,12 +82,12 @@ void Recipe::showStep() {
     }
 }
 
-void Recipe::showRecipe() {
+void Recipe::showRecipe() const {
     if (!this->isEmpty()){
         Recipe recipeCopy = Recipe(*this);
-        while(!recipeCopy.isEmpty()){ // переписать на конструктор копирования
+        while(!recipeCopy.isEmpty()){
             recipeCopy.showStep();
-            recipeCopy.next();
+            recipeCopy.nextStep();
         }
     } else{
         cout << "Empty recipe" << endl;
